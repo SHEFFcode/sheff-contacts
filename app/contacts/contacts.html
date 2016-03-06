@@ -1,0 +1,98 @@
+<div class="row" ng-controller="ContactsCtrl">
+	<form ng-submit="addFormSubmit()" ng-show="addFormShow">
+		<h3>Add Contact</h3>
+		<div class="row">
+			<div class="col-md-6">
+				<label>Name:
+					<input type="text" ng-model="name" placeholder="Contact Name" required/>
+				</label>
+			</div>
+			<div class="col-md-6">
+				<label>Email:
+					<input type="email" ng-model="email" placeholder="Contact Email" required/>
+				</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<label>Company:
+					<input type="text" ng-model="company" placeholder="Company Name"/>
+				</label>
+			</div>
+			<div class="col-md-6">
+				<label>Work Phone:
+					<input type="number" ng-model="work_phone" placeholder="Work Phone"/>
+				</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<label>Mobile Phone:
+					<input type="number" ng-model="mobile_phone" placeholder="Mobile Phone"/>
+				</label>
+			</div>
+			<div class="col-md-6">
+				<label>Home Phone:
+					<input type="number" ng-model="home_phone" placeholder="Home Phone"/>
+				</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<label>Street Address:
+					<input type="text" ng-model="street_address" placeholder="Street Address"/>
+				</label>
+			</div>
+			<div class="col-md-6">
+				<label>City:
+					<input type="text" ng-model="city" placeholder="City"/>
+				</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<label>State:
+					<input type="text" ng-model="state" placeholder="State" required/>
+				</label>
+			</div>
+			<div class="col-md-6">
+				<label>Zip:
+					<input type="number" ng-model="zip" placeholder="Zip" required/>
+				</label>
+			</div>
+		</div>
+		<vid class="row">
+			<div class="col-md-6">
+				<input type="submit" value="Add Contact" class="btn btn-primary">
+				<input type="cancel" value="Cancel" class="btn btn-danger" ng-click="hide()">
+			</div>
+		</vid>
+	</form>
+
+	<div class="col-md-12">
+		<table class="striped">
+			<thead>
+				<tr>
+					<th data-field="id">Name</th>
+					<th data-field="company">Company</th>
+					<th data-field="email">Email</th>
+					<th data-field="actions">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="contact in contacts">
+					<td><a href="#">{{contact.name}}</a></td>
+					<td>{{contact.company}}</td>
+					<td>{{contact.email}}</td>
+					<td>
+						<a class="btn btn-sm btn-primary" ng-click="showEditForm(contact)">Edit</a>
+						<a class="btn btn-sm btn-danger" ng-click="removeContact(contact)">Delete</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<a id="addContact" class="btn-floating btn-large waves-effect waves-light red" ng-click="showAddForm()" ng-hide="addFormShow"><i class="material-icons">add</i></a>
+	</div>
+</div>
