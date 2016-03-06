@@ -3,7 +3,7 @@
 		<div data-alert class="alert alert-success" role="alert" ng-show="msg">{{msg}}</div>
 		<!-- Show Contact -->
 		<div class="row" ng-show="contactShow">
-			<div class="panel">
+			<div class="well">
 				<h3>{{name}}</h3>
 				<ul>
 					<li><strong>Company: </strong>{{company}}</li>
@@ -16,6 +16,7 @@
 					<li>{{street_address}}</li>
 					<li>{{city}}, {{state}}, {{zip}}</li>
 				</ul>
+				<input type="cancel" value="Cancel" class="btn btn-danger" ng-click="hide(); hideContact()">
 			</div>
 		</div>
 		<form ng-submit="addFormSubmit()" ng-show="addFormShow">
@@ -114,6 +115,6 @@
 		</table>
 	</div>
 	<div>
-		<a id="addContact" class="btn-floating btn-large waves-effect waves-light red" ng-click="showAddForm()" ng-hide="addFormShow"><i class="material-icons">add</i></a>
+		<a id="addContact" class="btn-floating btn-large waves-effect waves-light red" ng-click="showAddForm()" ng-hide="hidden"><i class="material-icons">add</i></a>
 	</div>
 </div>

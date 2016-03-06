@@ -3,10 +3,10 @@
 angular.module('sheffContacts.contacts', ['ngRoute', 'firebase'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/contacts', {
-    templateUrl: 'contacts/contacts.html',
-    controller: 'ContactsCtrl'
-  });
+	$routeProvider.when('/contacts', {
+		templateUrl: 'contacts/contacts.html',
+		controller: 'ContactsCtrl'
+	});
 }])
 
 //contacts controller
@@ -17,13 +17,20 @@ angular.module('sheffContacts.contacts', ['ngRoute', 'firebase'])
 	$scope.contacts = $firebaseArray(ref);
 	$scope.showAddForm = function() {
 		$scope.addFormShow = true;
+		$scope.hidden = true;
 
 	};
 
 	//Hide form
 	$scope.hide = function() {
 		$scope.addFormShow = false;
+		$scope.hidden = false;
 	};
+
+	//hide contact
+	$scope.hideContact = function() {
+		$scope.contactShow = false;
+	}
 
 	//submit contact
 	$scope.addFormSubmit = function() {
@@ -47,19 +54,19 @@ angular.module('sheffContacts.contacts', ['ngRoute', 'firebase'])
 			email: email,
 			company: company,
 			phones: [
-				{
-					mobile: mobile_phone,
-					home: home_phone,
-					work: work_phone
-				}
+			{
+				mobile: mobile_phone,
+				home: home_phone,
+				work: work_phone
+			}
 			],
 			address: [
-				{
-					street_address: street_address,
-					city: city,
-					state: state,
-					zip: zip
-				}
+			{
+				street_address: street_address,
+				city: city,
+				state: state,
+				zip: zip
+			}
 			]
 		})
 		.then(function(ref) {
@@ -74,21 +81,40 @@ angular.module('sheffContacts.contacts', ['ngRoute', 'firebase'])
 
 			//send message to user
 			$scope.msg = 'Contact Added';
-		
-		});
 
-		//clear $scope fields
-		function clearFeilds() {
-			$scope.name = '';
-			$scope.email = '';
-			$scope.company = '';
-			$scope.mobile_phone = '';
-			$scope.home_phone = '';
-			$scope.work_phone = '';
-			$scope.street_address = '';
-			$scope.city = '';
-			$scope.state = '';
-			$scope.zip = '';
-		}
+		});
+	}
+
+	$scope.showContact = function(contact) {
+		//set scope variables equal to contact object variables
+		console.log(contact);
+		if (contact.name) { $scope.name = contact.name; } else { $scope.name = null; }
+		if (contact.email) { $scope.email = contact.email; } else { $scope.email = null; }
+		if (contact.comapny) { $scope.comapny = contact.comapny; } else { $scope.comapny = null; }
+		if (contact.phones[0].work) { $scope.work_phone = contact.phones[0].work; } else { $scope.work_phone = null; }
+		if (contact.phones[0].home) { $scope.home_phone = contact.phones[0].home; } else { $scope.home_phone = null; }
+		if (contact.phones[0].mobile) { $scope.mobile_phone = contact.phones[0].mobile; } else { $scope.mobile_phone = null; }
+		if (contact.address[0].street_address) { $scope.street_address = contact.address[0].street_address; } else { $scope.street_address = null; }
+		if (contact.address[0].city) { $scope.city = contact.address[0].city; } else { $scope.city = null; }
+		if (contact.address[0].state) { $scope.state = contact.address[0].state; } else { $scope.state = null; }
+		if (contact.address[0].zip) { $scope.zip = contact.address[0].zip; } else { $scope.zip = null; }
+
+		//set contactShow to true
+		$scope.contactShow = true;
+		$scope.hidden = true;
 	};
+
+	//clear $scope fields
+	function clearFeilds() {
+		$scope.name = '';
+		$scope.email = '';
+		$scope.company = '';
+		$scope.mobile_phone = '';
+		$scope.home_phone = '';
+		$scope.work_phone = '';
+		$scope.street_address = '';
+		$scope.city = '';
+		$scope.state = '';
+		$scope.zip = '';
+	}
 }]);
