@@ -15,21 +15,43 @@ angular.module('sheffContacts.contacts', ['ngRoute', 'firebase'])
 	var ref = new Firebase('https://sheffcontacts.firebaseio.com/contacts');
 	//get contacts
 	$scope.contacts = $firebaseArray(ref);
+
+	//Show the add contact form
 	$scope.showAddForm = function() {
 		$scope.addFormShow = true;
 		$scope.hidden = true;
+	};
 
+	//Show the edit contact form
+	$scope.showEditForm = function(contact) {
+		$scope.editFormShow = true;
+		$scope.hidden = true;
+
+		//Current values for the form to display
+		$scope.id 				= contact.$id;	
+		$scope.name 			= contact.name;						
+		$scope.email 			= contact.email;						
+		$scope.company 			= contact.company;					
+		$scope.work_phone 		= contact.phones[0].work;			
+		$scope.home_phone 		= contact.phones[0].home;			
+		$scope.mobile_phone 	= contact.phones[0].mobile;			
+		$scope.street_address 	= contact.address[0].street_address;
+		$scope.city 			= contact.address[0].city; 		
+		$scope.state 			= contact.address[0].state;			
+		$scope.zip 				= contact.address[0].zip;			
 	};
 
 	//Hide form
 	$scope.hide = function() {
 		$scope.addFormShow = false;
+		$scope.editFormShow = false;
 		$scope.hidden = false;
 	};
 
 	//hide contact
 	$scope.hideContact = function() {
 		$scope.contactShow = false;
+		$scope.editFormShow = false;
 	}
 
 	//submit contact
@@ -83,6 +105,42 @@ angular.module('sheffContacts.contacts', ['ngRoute', 'firebase'])
 			$scope.msg = 'Contact Added';
 
 		});
+
+		$scope.hidden = false;
+	}
+
+	//update contact
+	$scope.editFormSubmit = function() {
+		console.log('updating contact');
+
+		//get contact id
+		var id = $scope.id;
+
+		//get specific record from id
+		var record = $scope.contacts.$getRecord(id);
+
+		//Assign values
+		record.name = 						$scope.name;
+		record.email = 						$scope.email;
+		record.company = 					$scope.company;
+		record.phones[0].work = 			$scope.work_phone;
+		record.phones[0].home = 			$scope.home_phone;
+		record.phones[0].mobile = 			$scope.mobile_phone;
+		record.address[0].street_address = 	$scope.street_address;
+		record.address[0].city = 			$scope.city;
+		record.address[0].state = 			$scope.state;
+		record.address[0].zip = 			$scope.zip;
+
+		//Save contact
+		$scope.contacts.$save(record).then(function(ref) {
+			console.log(ref.key);
+			clearFields();
+		});
+
+		//hide edit form
+		$scope.editFormShow = false;
+		$scope.msg = 'contact updated';
+		$scope.hidden = false;
 	}
 
 	$scope.showContact = function(contact) {
@@ -104,8 +162,15 @@ angular.module('sheffContacts.contacts', ['ngRoute', 'firebase'])
 		$scope.hidden = true;
 	};
 
+	//delete contact
+	$scope.removeContact = function(contact) {
+		console.log('removing contact');
+		$scope.contacts.$remove(contact);
+		$scope.msg = "Contact removed."
+	}
+
 	//clear $scope fields
-	function clearFeilds() {
+	function clearFields() {
 		$scope.name = '';
 		$scope.email = '';
 		$scope.company = '';
